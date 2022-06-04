@@ -1,5 +1,6 @@
 import Head from "next/head";
-import Link from "next/link";
+import Genres from "../src/components/Genres";
+import Movies from "../src/components/Movies";
 
 export default function Home() {
   return (
@@ -11,8 +12,9 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1 className="text-4xl text-center">Welcome to Aroha</h1>
-        <Link href="/employees">Click here</Link> to view all employees
+        <h1 className="text-4xl text-center">Welcome to TMDB</h1>
+        <Genres />
+        <Movies />
       </main>
     </div>
   );

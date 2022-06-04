@@ -1,30 +1,38 @@
 import create from "zustand";
 
-export const useEmployees = create((set) => ({
-  employees: [
-    {
-      id: 1,
-      name: "John Doe",
-    },
-    {
-      id: 2,
-      name: "Jane Doe",
-    },
-    {
-      id: 3,
-      name: "Jack Doe",
-    },
-    {
-      id: 4,
-      name: "Jill Doe",
-    },
-  ],
+export const useGenres = create((set) => ({
+  genres: [],
+  movies: [],
+  selectedGenres: [],
+  selectedMovies: [],
 
-  addEmployee: (employee) =>
-    set((state) => ({ employees: state.employees.concat(employee) })),
+  setGenres: (genres) => set(() => ({ genres: genres })),
+  setMovies: (movies) =>
+    set(() => ({ movies: movies, selectedMovies: movies })),
 
-  removeEmployee: (id) =>
-    set((state) => ({
-      employees: state.employees.filter((employee) => employee.id !== id),
-    })),
+  addSelectedGenre: (genreId) =>
+    set((state) => {
+      const selectedGenres = [...state.selectedGenres, genreId];
+      return {
+        selectedGenres: selectedGenres,
+        selectedMovies: getMovies(state.movies, selectedGenres),
+      };
+    }),
+
+  removeSelectedGenre: (genreId) =>
+    set((state) => {
+      const selectedGenres = state.selectedGenres.filter((g) => g !== genreId);
+      return {
+        selectedGenres: selectedGenres,
+        selectedMovies: getMovies(state.movies, selectedGenres),
+      };
+    }),
 }));
+
+function getMovies(movies, selectedGenres) {
+  return movies.filter((movie) => {
+    return selectedGenres.length === 0
+      ? true
+      : selectedGenres.includes(movie.type);
+  });
+}
